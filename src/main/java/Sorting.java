@@ -33,9 +33,17 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] bubbleSort(final int[] array) {
-        return null;
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = 0; j < array.length - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+        return array;
     }
-
     /**
      * Selection sort.
      *
@@ -44,7 +52,20 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] selectionSort(final int[] array) {
-        return null;
+        for (int i = 0; i < array.length - 1; i++) {
+            int min = array[i];
+            int index = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[j] < min) {
+                    min = array[j];
+                    index = j;
+                }
+            }
+            int temp = array[i];
+            array[i] = array[index];
+            array[index] = temp;
+        }
+        return array;
     }
 
     /**
@@ -55,7 +76,50 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] mergeSort(final int[] array) {
-        return null;
+        boolean isSorted = true;
+        for (int i = 0; i < array.length - 1; i++) {
+            if (array[i] > array[i + 1]) {
+                isSorted = false;
+                break;
+            }
+        }
+        if (!(isSorted)) {
+            int newLength = array.length / 2;
+            int[] toSort = new int[newLength];
+            int[] alsoToSort = new int[array.length - newLength];
+            int mid = (array.length / 2);
+            for (int i = 0; i < toSort.length; i++) {
+                toSort[i] = array[i];
+            }
+            for (int i = mid; i < array.length; i++) {
+                alsoToSort[i - mid] = array[i];
+            }
+            //////////////
+            int[] firstArray = mergeSort(toSort);
+            int[] secondArray = mergeSort(alsoToSort);
+            int[] toReturn = new int[array.length];
+            int currentFirst = 0;
+            int currentSecond = 0;
+            for (int i = 0; i < toReturn.length; i++) {
+                if (currentFirst < firstArray.length && currentSecond < secondArray.length) {
+                    if (firstArray[currentFirst] < secondArray[currentSecond]) {
+                        toReturn[i] = firstArray[currentFirst];
+                        currentFirst++;
+                    } else {
+                        toReturn[i] = secondArray[currentSecond];
+                        currentSecond++;
+                    }
+                } else if (currentFirst < firstArray.length) {
+                    toReturn[i] = firstArray[currentFirst];
+                    currentFirst++;
+                } else {
+                    toReturn[i] = secondArray[currentSecond];
+                    currentSecond++;
+                }
+            }
+            return toReturn;
+        }
+        return array;
     }
 
     /**
